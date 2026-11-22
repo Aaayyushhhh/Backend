@@ -25,9 +25,18 @@ app.get("/notes", async (req, res) => {
 });
 
 app.delete("/notes/:id", async (req, res) => {
-  const id = await noteModel.findOneAndDelete({
+  const id = req.params.id;
+  await noteModel.findOneAndDelete({
     _id: id,
   });
+
+  res.status(200).json({ mesage: "Node deleted successfully" });
 });
 
+app.patch("/notes/:id", async (req, res) => {
+  const id = req.params.id;
+  const description = req.body.description;
+  await noteModel.findOneAndUpdate({ _id: id }, { description: description });
+  res.status(200).json({ mesage: "Node updated successfully" });
+});
 module.exports = app;
